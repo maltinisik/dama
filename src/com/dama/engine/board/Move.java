@@ -8,6 +8,7 @@ import com.dama.engine.board.Board.Builder;
 import com.dama.engine.pieces.Alliance;
 import com.dama.engine.pieces.Pawn;
 import com.dama.engine.pieces.Piece;
+import com.dama.engine.player.MoveDirection;
 import com.dama.engine.player.MoveExecution;
 
 public abstract class Move {
@@ -80,7 +81,7 @@ public abstract class Move {
 	  final AttackMove decoratedMove;
 	  final Pawn promotedPawn;
 	  public PawnPromotionAttack(final AttackMove decoratedMove) {
-         super(decoratedMove.getBoard(), decoratedMove.getMovedPiece(), decoratedMove.getDestinationCoordinate(),decoratedMove.attackedPiece);
+         super(decoratedMove.getBoard(), decoratedMove.getMovedPiece(), decoratedMove.getDestinationCoordinate(),decoratedMove.attackedPiece,decoratedMove.moveDirection);
          
          this.decoratedMove=decoratedMove;
          this.promotedPawn=(Pawn)decoratedMove.getMovedPiece();
@@ -121,10 +122,12 @@ public abstract class Move {
   public static class AttackMove extends Move {
 	  final Piece attackedPiece;
 	  AttackMove nextAttackMove;
-	  public AttackMove(Board board, Piece movedPiece, int destinationCoordinate,Piece attackedPiece) {
+	  final MoveDirection moveDirection;
+	  public AttackMove(Board board, Piece movedPiece, int destinationCoordinate,Piece attackedPiece,MoveDirection moveDirection) {
          super(board, movedPiece, destinationCoordinate);
 	     this.attackedPiece=attackedPiece;
          this.nextAttackMove=null;
+         this.moveDirection=moveDirection;
 	  }
 	  
 	  @Override
@@ -159,6 +162,10 @@ public abstract class Move {
 	  
 	  public AttackMove getNextAttackMove() {
 		  return this.nextAttackMove;
+	  }
+	  
+	  public MoveDirection getMoveDirection() {
+		  return this.moveDirection;
 	  }
 	  
 	  @Override
@@ -342,27 +349,23 @@ public int getCurrentCoordinate() {
 		return false;
 	}
 	
-	public static AttackMove calculateNextAttackMoves(final Board board, final Piece piece, AttackMove attackMove) {
+	public static AttackMove calculateNextAttackMoves(final Piece piece, AttackMove attackMove) {
 	    final Board transitionBoard = attackMove.execute(piece);
 	    
 	    List<Move> lastMovedPieceLegalMoves = transitionBoard.getLastMovedPieceLegalMoves();
 	    
 	    if (hasAttackMoveInSameLevel(lastMovedPieceLegalMoves)) {
-			for (Move move : transitionBoard.getLastMovedPieceLegalMoves()) {
+			for (Move move : lastMovedPieceLegalMoves) {
 				if (move.isAttack()) 
 				{
-					attackMove.setNextAttackMove(calculateNextAttackMoves(transitionBoard, transitionBoard.getLastMovedPiece(), (AttackMove) move));
+					final AttackMove nextAttackMove = ((AttackMove)move);
+	                //next tas yonu bir onceki attack hareketinin ayni yonu olamaz
+					if (!nextAttackMove.moveDirection.equals(attackMove.moveDirection.getOpposite())) {
+						attackMove.setNextAttackMove(calculateNextAttackMoves(transitionBoard.getLastMovedPiece(), nextAttackMove));						
+					}
 				}
 			}
 		}
-	    //else {
-		//	for (Move move : transitionBoard.getLastMovedPieceLegalMoves()) {
-		//		if (!move.isAttack()) 
-		//		{
-		//			attackMove.addNextAttackMoves(move);
-		//		}
-		//	}	    	
-	    //}
 		
 		return attackMove;
 	}

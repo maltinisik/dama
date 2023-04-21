@@ -11,6 +11,7 @@ import com.dama.engine.pieces.Pawn;
 import com.dama.engine.pieces.Piece;
 import com.dama.engine.pieces.Queen;
 import com.dama.engine.player.BlackPlayer;
+import com.dama.engine.player.MoveDirection;
 import com.dama.engine.player.MoveExecution;
 import com.dama.engine.player.Player;
 import com.dama.engine.player.WhitePlayer;
@@ -116,12 +117,11 @@ public class Board {
 		final List<Move> legalMoves= new ArrayList<Move>();
     	for (Move move : this.getCurrentPlayer().getLegalMoves()) {
 			if (move.getMovedPiece().equals(this.getLastMovedPiece())) {
-				legalMoves.add(move);
+			  legalMoves.add(move);	
 			}
 		}
     	
-    	//return ImmutableList.copyOf(legalMoves);
-    	return legalMoves;
+    	return ImmutableList.copyOf(legalMoves);
 	}
 	
 	private Collection<Piece> calculateActivePieces(final Alliance allience) {
@@ -155,62 +155,63 @@ public class Board {
 		Builder builder = new Builder();
 		//Black
 		
-		builder.setPiece(new Pawn(8,Alliance.BLACK));
-		builder.setPiece(new Pawn(9,Alliance.BLACK));
-		builder.setPiece(new Pawn(10,Alliance.BLACK));
-		builder.setPiece(new Pawn(11,Alliance.BLACK));
-		builder.setPiece(new Pawn(12,Alliance.BLACK));
-		builder.setPiece(new Pawn(13,Alliance.BLACK));
-		builder.setPiece(new Pawn(14,Alliance.BLACK));
-		builder.setPiece(new Pawn(15,Alliance.BLACK));
-		builder.setPiece(new Pawn(16,Alliance.BLACK));
-		builder.setPiece(new Pawn(17,Alliance.BLACK));
-		builder.setPiece(new Pawn(18,Alliance.BLACK));
-		builder.setPiece(new Pawn(19,Alliance.BLACK));
-		builder.setPiece(new Pawn(20,Alliance.BLACK));
-		builder.setPiece(new Pawn(21,Alliance.BLACK));
-		builder.setPiece(new Pawn(22,Alliance.BLACK));
-		builder.setPiece(new Pawn(23,Alliance.BLACK));
+//		builder.setPiece(new Pawn(8,Alliance.BLACK));
+//		builder.setPiece(new Pawn(9,Alliance.BLACK));
+//		builder.setPiece(new Pawn(10,Alliance.BLACK));
+//		builder.setPiece(new Pawn(11,Alliance.BLACK));
+//		builder.setPiece(new Pawn(12,Alliance.BLACK));
+//		builder.setPiece(new Pawn(13,Alliance.BLACK));
+//		builder.setPiece(new Pawn(14,Alliance.BLACK));
+//		builder.setPiece(new Pawn(15,Alliance.BLACK));
+//		builder.setPiece(new Pawn(16,Alliance.BLACK));
+//		builder.setPiece(new Pawn(17,Alliance.BLACK));
+//		builder.setPiece(new Pawn(18,Alliance.BLACK));
+//		builder.setPiece(new Pawn(19,Alliance.BLACK));
+//		builder.setPiece(new Pawn(20,Alliance.BLACK));
+//		builder.setPiece(new Pawn(21,Alliance.BLACK));
+//		builder.setPiece(new Pawn(22,Alliance.BLACK));
+//		builder.setPiece(new Pawn(23,Alliance.BLACK));
 		
 		//White
-		builder.setPiece(new Pawn(40,Alliance.WHITE));
-		builder.setPiece(new Pawn(41,Alliance.WHITE));
-		builder.setPiece(new Pawn(42,Alliance.WHITE));
-		builder.setPiece(new Pawn(43,Alliance.WHITE));
-		builder.setPiece(new Pawn(44,Alliance.WHITE));
-		builder.setPiece(new Pawn(45,Alliance.WHITE));
-		builder.setPiece(new Pawn(46,Alliance.WHITE));
-		builder.setPiece(new Pawn(47,Alliance.WHITE));		
-		builder.setPiece(new Pawn(48,Alliance.WHITE));
-		builder.setPiece(new Pawn(49,Alliance.WHITE));
-		builder.setPiece(new Pawn(50,Alliance.WHITE));
-		builder.setPiece(new Pawn(51,Alliance.WHITE));
-		builder.setPiece(new Pawn(52,Alliance.WHITE));
-		builder.setPiece(new Pawn(53,Alliance.WHITE));
-		builder.setPiece(new Pawn(54,Alliance.WHITE));
-		builder.setPiece(new Pawn(55,Alliance.WHITE));
-		
-//		builder.setPiece(new Pawn(18,Alliance.BLACK));
-//		builder.setPiece(new Pawn(26,Alliance.BLACK));
-//		builder.setPiece(new Pawn(34,Alliance.WHITE));
-//		builder.setPiece(new Pawn(50,Alliance.WHITE));
-//
-//		builder.setPiece(new Pawn(44,Alliance.WHITE));
-//	    builder.setPiece(new Pawn(45,Alliance.WHITE));
-//		builder.setPiece(new Pawn(51,Alliance.WHITE));
-//
+//		builder.setPiece(new Pawn(40,Alliance.WHITE));
+//		builder.setPiece(new Pawn(41,Alliance.WHITE));
 //		builder.setPiece(new Pawn(42,Alliance.WHITE));
 //		builder.setPiece(new Pawn(43,Alliance.WHITE));
-//		builder.setPiece(new Pawn(41,Alliance.BLACK));
-//		
-//		builder.setPiece(new Pawn(40,Alliance.BLACK));
+//		builder.setPiece(new Pawn(44,Alliance.WHITE));
+//		builder.setPiece(new Pawn(45,Alliance.WHITE));
+//		builder.setPiece(new Pawn(46,Alliance.WHITE));
+//		builder.setPiece(new Pawn(47,Alliance.WHITE));		
+//		builder.setPiece(new Pawn(48,Alliance.WHITE));
+//		builder.setPiece(new Pawn(49,Alliance.WHITE));
+//		builder.setPiece(new Pawn(50,Alliance.WHITE));
+//		builder.setPiece(new Pawn(51,Alliance.WHITE));
+//		builder.setPiece(new Pawn(52,Alliance.WHITE));
+//		builder.setPiece(new Pawn(53,Alliance.WHITE));
+//		builder.setPiece(new Pawn(54,Alliance.WHITE));
+//		builder.setPiece(new Pawn(55,Alliance.WHITE));
+		
+		builder.setPiece(new Pawn(16,Alliance.BLACK));
+		builder.setPiece(new Pawn(17,Alliance.BLACK));
+		builder.setPiece(new Pawn(25,Alliance.BLACK));
+		builder.setPiece(new Pawn(10,Alliance.BLACK));
 
+		builder.setPiece(new Pawn(37,Alliance.BLACK));
+	    builder.setPiece(new Pawn(21,Alliance.BLACK));
+		builder.setPiece(new Pawn(23,Alliance.BLACK));
+
+		builder.setPiece(new Pawn(19,Alliance.WHITE));
+		builder.setPiece(new Pawn(28,Alliance.WHITE));
+		builder.setPiece(new Pawn(32,Alliance.WHITE));
+		builder.setPiece(new Pawn(33,Alliance.WHITE));
+		builder.setPiece(new Pawn(40,Alliance.WHITE));
+		builder.setPiece(new Pawn(41,Alliance.WHITE));
+		builder.setPiece(new Pawn(46,Alliance.WHITE));
+		builder.setPiece(new Pawn(39,Alliance.WHITE));
 		
-//		builder.setPiece(new Queen(8,Alliance.WHITE));
 		
-		builder.setMoveMaker(Alliance.BLACK);
+		builder.setMoveMaker(Alliance.WHITE);
 		
-//		builder.setMoveMaker(Alliance.WHITE);
+		//		builder.setMoveMaker(Alliance.WHITE);
 		
 		return builder.build();
 	}
@@ -276,5 +277,9 @@ public class Board {
 	
 	public Piece getLastMovedPiece() {
 		return this.moveExecution != null ? this.moveExecution.getLastMovedPiece() : null;
+	}
+	
+	public MoveExecution getLastMoveExecution() {
+		return this.moveExecution;
 	}
 }

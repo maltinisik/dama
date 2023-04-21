@@ -9,6 +9,7 @@ import com.dama.engine.board.Move;
 import com.dama.engine.board.Move.AttackMove;
 import com.dama.engine.board.Move.PawnMove;
 import com.dama.engine.board.Move.PawnPromotion;
+import com.dama.engine.player.MoveDirection;
 import com.google.common.collect.ImmutableList;
 
 public class Pawn extends Piece {
@@ -32,7 +33,11 @@ public class Pawn extends Piece {
 			else {
 				candidateDestinationCoordinate = this.piecePostion + (candidateCoordinateOffset);				
 			}
-
+			
+			if (MoveDirection.checkIsOppositeDirection(board,this,candidateCoordinateOffset)) {
+				continue;
+			}
+			
 			if (isFirstColumnExclusion(this.piecePostion, candidateCoordinateOffset) ||
 			    isEightColumnExclusion(this.piecePostion, candidateCoordinateOffset)) {
 				continue;
@@ -73,13 +78,13 @@ public class Pawn extends Piece {
 					!board.getTile(behindOfBehindCandidateDestinationCoordinate).isTileOccupied())
 				{
 					if (this.getPieceAlliance().isPawnPromotionSquare(candidateDestinationCoordinate)) {
-					    legalMoves.add(new Move.PawnPromotionAttack(new Move.AttackMove(board, this, candidateDestinationCoordinate, board.getTile(behindCandidateDestinationCoordinate).getPiece())));
+					    legalMoves.add(new Move.PawnPromotionAttack(new Move.AttackMove(board, this, candidateDestinationCoordinate, board.getTile(behindCandidateDestinationCoordinate).getPiece(),MoveDirection.getMoveDirection(candidateCoordinateOffset))));
 					}
 					else 
 					{
-						AttackMove attackMove = new Move.AttackMove(board, this, candidateDestinationCoordinate, board.getTile(behindCandidateDestinationCoordinate).getPiece());
+						AttackMove attackMove = new Move.AttackMove(board, this, candidateDestinationCoordinate, board.getTile(behindCandidateDestinationCoordinate).getPiece(),MoveDirection.getMoveDirection(candidateCoordinateOffset));
 					    //if (!board.isTransientBoard()) {
-						attackMove = Move.calculateNextAttackMoves(board,this,attackMove);							
+						attackMove = Move.calculateNextAttackMoves(this,attackMove);							
 						//}
 					    legalMoves.add(attackMove);
 					}
@@ -100,9 +105,9 @@ public class Pawn extends Piece {
 					   continue;
 					}
 					
-					AttackMove attackMove = new Move.AttackMove(board, this, candidateDestinationCoordinate, board.getTile(behindCandidateDestinationCoordinate).getPiece());
+					AttackMove attackMove = new Move.AttackMove(board, this, candidateDestinationCoordinate, board.getTile(behindCandidateDestinationCoordinate).getPiece(),MoveDirection.getMoveDirection(candidateCoordinateOffset));
 				    //if (!board.isTransientBoard()) {
-					attackMove = Move.calculateNextAttackMoves(board,this,attackMove);
+					attackMove = Move.calculateNextAttackMoves(this,attackMove);
 					//}
 				    legalMoves.add(attackMove);
 				}

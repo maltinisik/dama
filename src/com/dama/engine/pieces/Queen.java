@@ -10,6 +10,7 @@ import com.dama.engine.board.Move;
 import com.dama.engine.board.Move.AttackMove;
 import com.dama.engine.board.Move.MajorMove;
 import com.dama.engine.board.Tile;
+import com.dama.engine.player.MoveDirection;
 import com.google.common.collect.ImmutableList;
 
 public class Queen extends Piece {
@@ -32,6 +33,11 @@ public class Queen extends Piece {
 						isEightColumnExclusion(candidateDestinationCoordinate, candidateCoordinateOffset)) {
 					break;
 				}
+				
+				if (MoveDirection.checkIsOppositeDirection(board,this,candidateCoordinateOffset)) {
+					break;
+				}
+				
 				candidateDestinationCoordinate += candidateCoordinateOffset;
 				if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
 					  final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
@@ -63,9 +69,9 @@ public class Queen extends Piece {
 						  
 						  if (!board.getTile(behindCandidateDestinationCoordinate).isTileOccupied()) 
 						  {
-							  AttackMove attackMove = new Move.AttackMove(board, this, behindCandidateDestinationCoordinate, board.getTile(candidateDestinationCoordinate).getPiece());								  
+							  AttackMove attackMove = new Move.AttackMove(board, this, behindCandidateDestinationCoordinate, board.getTile(candidateDestinationCoordinate).getPiece(),MoveDirection.getMoveDirection(candidateCoordinateOffset));								  
 							//  if (!board.isTransientBoard()) {
-								  attackMove = Move.calculateNextAttackMoves(board,this,attackMove);							
+								  attackMove = Move.calculateNextAttackMoves(this,attackMove);							
 							//  }
 							  legalMoves.add(attackMove);
 
@@ -86,16 +92,15 @@ public class Queen extends Piece {
 									break;
 								  }
 								  
-								  AttackMove attackMoveNext = new Move.AttackMove(board, this, behindCandidateDestinationCoordinate, board.getTile(candidateDestinationCoordinate).getPiece());								  
+								  AttackMove attackMoveNext = new Move.AttackMove(board, this, behindCandidateDestinationCoordinate, board.getTile(candidateDestinationCoordinate).getPiece(),MoveDirection.getMoveDirection(candidateCoordinateOffset));								  
 						//		  if (!board.isTransientBoard()) {
-									  attackMoveNext = Move.calculateNextAttackMoves(board,this,attackMoveNext);							
+									  attackMoveNext = Move.calculateNextAttackMoves(this,attackMoveNext);							
 						//		  }
 								  legalMoves.add(attackMoveNext);
 								  
 								  //+1 olarak ilerlerken 8.kolonda ise cik
 								  //-1 olarak  ilerlerken 1.kolonda ise cik						  
 							  } 
-							  
 						  }
 
 						  //rakip ya da kendi tasini buldugunda her durumda next aramalari kes
