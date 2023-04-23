@@ -83,7 +83,6 @@ public class Board {
 			return ImmutableList.copyOf(legalMoves);
 		}
 		
-		
 		boolean lastMovedPieceHasAttackMove = false;
 		
 		//eger en son oynanan tas hala alacak tasi var ise bu durumda bu renkteki diger taslarin hareketlerini gereksiz hesaplama

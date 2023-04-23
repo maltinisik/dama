@@ -51,9 +51,7 @@ public abstract class Piece {
 	   return this.getPieceType().getPieceValue();
    }
 
-   public int getPiecePositionalValue(int coefficient) {
-	   return this.getPieceType().getPieceValue() + BoardUtils.getPieceRowNum(this.pieceAllience, this.piecePostion)*coefficient;
-   }
+   public abstract int getPiecePositionalValue();
    
    public enum PieceType {
 	   PAWN("P",100) {
@@ -66,7 +64,7 @@ public abstract class Piece {
 			return true;
 		}
 	},
-	   QUEEN("Q",900) {
+	   QUEEN("Q",2000) {
 		@Override
 		public boolean isQueen() {
 			return false;

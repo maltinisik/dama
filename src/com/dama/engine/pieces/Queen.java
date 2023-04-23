@@ -133,4 +133,7 @@ public class Queen extends Piece {
 		return queen;
 	}
 	
+	public int getPiecePositionalValue() {
+		   return this.getPieceType().getPieceValue();
+	}
 }

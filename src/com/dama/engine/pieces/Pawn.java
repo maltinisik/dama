@@ -15,6 +15,7 @@ import com.google.common.collect.ImmutableList;
 public class Pawn extends Piece {
 
 	private final static int[] CANDIDATE_MOVE_COORDINATES = {8,-1,1,-2,2,16};
+	private static final int PAWN_POSITIONAL_MULTIPLIER = 50;
 	
 	public Pawn(int piecePostion, Alliance pieceAllience) {
 		super(PieceType.PAWN,piecePostion, pieceAllience);
@@ -138,5 +139,10 @@ public class Pawn extends Piece {
 
 	public Queen getPromotionPiece() {
 		 return new Queen(this.piecePostion, this.pieceAllience);
+	}
+
+	@Override
+	public int getPiecePositionalValue() {
+		   return this.getPieceType().getPieceValue() + BoardUtils.getPieceRowNum(this.pieceAllience, this.piecePostion)*PAWN_POSITIONAL_MULTIPLIER;
 	}
 }

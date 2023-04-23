@@ -213,9 +213,9 @@ private static class AIThinkTank extends SwingWorker<Move, String> {
     }
             @Override
             protected Move doInBackground() throws Exception {
-        final MoveStrategy strategy = new MiniMax(Table.get().gameSetup.getSearchDepth());
-        Move bestMove = strategy.execute(Table.get().getGameBoard());
-                    return bestMove;
+              final MoveStrategy strategy = new MiniMax(Table.get().gameSetup.getSearchDepth());
+              Move bestMove = strategy.execute(Table.get().getGameBoard());
+              return bestMove;
             }
             
             @Override
@@ -328,7 +328,7 @@ private static class AIThinkTank extends SwingWorker<Move, String> {
 					System.out.println("position: " + tileId);
 					
 		            if (board.getTile(tileId).getPiece()!=null ) {
-		            	System.out.println("PiecePositionalValue: " + board.getTile(tileId).getPiece().getPiecePositionalValue(50));
+		            	System.out.println("PiecePositionalValue: " + board.getTile(tileId).getPiece().getPiecePositionalValue());
 					}
 				}
 				

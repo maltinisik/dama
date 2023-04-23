@@ -31,8 +31,8 @@ public class MiniMax implements MoveStrategy {
           if (moveTransition.getMoveStatus().isDone()) {
         	  
         	  currentValue = board.getCurrentPlayer().getAlliance().isWhite() ?
-        			         min(moveTransition.getTransitionBoard(),this.searchDepth-1) :
-        			         max(moveTransition.getTransitionBoard(),this.searchDepth-1);
+        			         min(moveTransition.getTransitionBoard(),highestValue, lowestValue, this.searchDepth-1) :
+        			         max(moveTransition.getTransitionBoard(),highestValue, lowestValue, this.searchDepth-1);
         	 
         	  if (board.getCurrentPlayer().getAlliance().isWhite() && currentValue >= highestValue) {
         		  highestValue = currentValue;
@@ -47,7 +47,7 @@ public class MiniMax implements MoveStrategy {
 		return bestMove;
 	}
 
-	public int min(Board board, int depth) {
+	public int min(Board board, int alpha, int beta, int depth) {
 		if (depth==0 || isEndGameScenario(board)) {
 			return this.boardEvaluator.evaluate(board, depth);
 		}
@@ -56,17 +56,22 @@ public class MiniMax implements MoveStrategy {
         for(final Move move : board.getCurrentPlayer().getLegalMoves()) {
           final MoveTransition moveTransition = board.getCurrentPlayer().makeMove(move);
           if (moveTransition.getMoveStatus().isDone()) {
-        	  final int currentValue = max(moveTransition.getTransitionBoard(),depth-1);
+        	  final int currentValue = max(moveTransition.getTransitionBoard(),alpha,beta,depth-1);
         	  if (currentValue<=lowestValue) {
         		  lowestValue = currentValue;
   			  }
+        	  
+        	  beta = Math.min(beta,currentValue);
+        	  if (beta <= alpha) {
+				break;
+			  }
 		  }
         }
 		
 		return lowestValue;
 	}
 
-	public int max(Board board, int depth) {
+	public int max(Board board, int alpha, int beta,int depth) {
 		if (depth==0 || isEndGameScenario(board)) {
 			return this.boardEvaluator.evaluate(board, depth);
 		}
@@ -75,10 +80,16 @@ public class MiniMax implements MoveStrategy {
         for(final Move move : board.getCurrentPlayer().getLegalMoves()) {
           final MoveTransition moveTransition = board.getCurrentPlayer().makeMove(move);
           if (moveTransition.getMoveStatus().isDone()) {
-        	  final int currentValue = min(moveTransition.getTransitionBoard(),depth-1);
+        	  final int currentValue = min(moveTransition.getTransitionBoard(),alpha,beta,depth-1);
         	  if (currentValue>=highestValue) {
         		  highestValue = currentValue;
   			  }
+        	  
+        	  alpha = Math.max(alpha, currentValue);
+        	  
+        	  if (beta<=alpha) {
+				break;
+			  }
 		  }
         }
 		
