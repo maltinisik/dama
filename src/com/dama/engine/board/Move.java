@@ -302,7 +302,7 @@ public int getCurrentCoordinate() {
 	}
     
     for (Piece piece : board.getCurrentPlayer().getOpponent().getActivePieces()) {
-			builder.setPiece(piece);
+	  builder.setPiece(piece);
 	}
     
     //move the moved piece

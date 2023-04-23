@@ -277,7 +277,7 @@ public class Table extends Observable {
 						            for (Move legalMove : legalMoves) {
 						            	if (legalMove.getMovedPiece()==humanMovedPiece) {
 						            		//if(checkMoveIsValid(legalMove)) {  //satranc icin gerekli olan bu hamle dama icin gerekli olmayabildigi icin kaldirildi
-						            			if(legalMove.isAttack()) System.out.println("Attack count="+((AttackMove)legalMove).getCountOfCapturedPiecesWithAttackMoves());
+						            			//if(legalMove.isAttack()) System.out.println("Attack count="+((AttackMove)legalMove).getCountOfCapturedPiecesWithAttackMoves());
 							            		attackedMoves.add(legalMove.getDestinationCoordinate());						            			
 						            		//}
 										}
