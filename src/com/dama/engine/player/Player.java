@@ -54,8 +54,21 @@ public abstract class Player {
    
    public abstract Player getOpponent();
 
+   public abstract int getPieceCount();
+
    public Collection<Move> getLegalMoves() {
 		return legalMoves;
    }
 
+	public boolean isInWin() {
+		return this.getOpponent().getPieceCount()==0;
+	}
+
+	public boolean isInLoss() {
+		return this.getPieceCount()==0;
+	}
+	
+	public boolean isInDraw() {
+		return  this.getPieceCount()==1 && this.getOpponent().getPieceCount()==1;
+	}
 }

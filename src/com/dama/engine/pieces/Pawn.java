@@ -78,14 +78,14 @@ public class Pawn extends Piece {
 					!board.getTile(behindOfBehindCandidateDestinationCoordinate).isTileOccupied())
 				{
 					if (this.getPieceAlliance().isPawnPromotionSquare(candidateDestinationCoordinate)) {
-					    legalMoves.add(new Move.PawnPromotionAttack(new Move.AttackMove(board, this, candidateDestinationCoordinate, board.getTile(behindCandidateDestinationCoordinate).getPiece(),MoveDirection.getMoveDirection(candidateCoordinateOffset))));
+						AttackMove attackMove = new Move.PawnPromotionAttack(new Move.AttackMove(board, this, candidateDestinationCoordinate, board.getTile(behindCandidateDestinationCoordinate).getPiece(),MoveDirection.getMoveDirection(candidateCoordinateOffset)));
+						attackMove = Move.calculateNextAttackMoves(this,attackMove);							
+					    legalMoves.add(attackMove);
 					}
 					else 
 					{
 						AttackMove attackMove = new Move.AttackMove(board, this, candidateDestinationCoordinate, board.getTile(behindCandidateDestinationCoordinate).getPiece(),MoveDirection.getMoveDirection(candidateCoordinateOffset));
-					    //if (!board.isTransientBoard()) {
 						attackMove = Move.calculateNextAttackMoves(this,attackMove);							
-						//}
 					    legalMoves.add(attackMove);
 					}
 				}

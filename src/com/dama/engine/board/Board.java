@@ -182,10 +182,10 @@ public class Board {
 		builder.setPiece(new Pawn(54,Alliance.WHITE));
 		builder.setPiece(new Pawn(55,Alliance.WHITE));
 		
-//		builder.setPiece(new Pawn(23,Alliance.BLACK));
-//		builder.setPiece(new Pawn(31,Alliance.BLACK));
-//		builder.setPiece(new Pawn(9,Alliance.BLACK));
-//		builder.setPiece(new Pawn(17,Alliance.BLACK));
+//		builder.setPiece(new Pawn(35,Alliance.WHITE));
+//		builder.setPiece(new Pawn(27,Alliance.BLACK));
+//		builder.setPiece(new Pawn(11,Alliance.BLACK));
+//		builder.setPiece(new Pawn(4,Alliance.BLACK));
 //		builder.setPiece(new Pawn(16,Alliance.BLACK));
 //	    builder.setPiece(new Pawn(48,Alliance.BLACK));
 //		builder.setPiece(new Pawn(41,Alliance.BLACK));
@@ -200,9 +200,7 @@ public class Board {
 //		builder.setPiece(new Pawn(46,Alliance.WHITE));
 //		builder.setPiece(new Pawn(47,Alliance.WHITE));
 		
-		builder.setMoveMaker(Alliance.BLACK);
-		
-		//	builder.setMoveMaker(Alliance.WHITE);
+			builder.setMoveMaker(Alliance.WHITE);
 		
 		return builder.build();
 	}

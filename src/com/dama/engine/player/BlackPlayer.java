@@ -36,4 +36,8 @@ public class BlackPlayer extends Player {
 		return board.getWhitePlayer();
 	}
 
+	@Override
+	public int getPieceCount() {
+		return this.getActivePieces().size();
+	}
 }

@@ -112,6 +112,42 @@ public abstract class Move {
 			return builder.build();
     }
   }  
+
+  public static final class PawnPromotionAttackWithNextAttack extends AttackMove {
+	  final AttackMove decoratedMove;
+	  final Pawn promotedPawn;
+	  public PawnPromotionAttackWithNextAttack(final AttackMove decoratedMove) {
+         super(decoratedMove.getBoard(), decoratedMove.getMovedPiece(), decoratedMove.getDestinationCoordinate(),decoratedMove.attackedPiece,decoratedMove.moveDirection);
+         
+         this.decoratedMove=decoratedMove;
+         this.promotedPawn=(Pawn)decoratedMove.getMovedPiece();
+	  }
+	  
+	  @Override
+	  public Board execute() {
+		    
+		    final Board pawnMovedBoard = this.decoratedMove.execute();
+		    final Builder builder = new Builder();
+		    
+		    for (Piece piece : pawnMovedBoard.getCurrentPlayer().getActivePieces()) {
+				if (!this.movedPiece.equals(piece)) {
+					builder.setPiece(piece);
+				}
+			}
+		    
+		    for (Piece piece : pawnMovedBoard.getCurrentPlayer().getOpponent().getActivePieces()) {
+				if (piece!=this.attackedPiece) {
+					builder.setPiece(piece);	
+				}
+		    }
+		    
+		    //promote the piece
+		    builder.setPiece(this.promotedPawn.getPromotionPiece().movePiece(this));
+		    builder.setMoveMaker(pawnMovedBoard.getCurrentPlayer().getAlliance());
+		    
+			return builder.build();
+    }
+  }  
   
   public static final class PawnMove extends Move {
 	  public PawnMove(Board board, Piece movedPiece, int destinationCoordinate) {
@@ -166,6 +202,10 @@ public abstract class Move {
 	  
 	  public MoveDirection getMoveDirection() {
 		  return this.moveDirection;
+	  }
+	  
+	  public boolean hasMoreAttackMove() {
+		  return this.nextAttackMove!=null;
 	  }
 	  
 	  @Override

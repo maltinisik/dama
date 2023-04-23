@@ -3,6 +3,7 @@ package com.dama.engine.pieces;
 import java.util.List;
 
 import com.dama.engine.board.Board;
+import com.dama.engine.board.BoardUtils;
 import com.dama.engine.board.Move;
 
 public abstract class Piece {
@@ -48,6 +49,10 @@ public abstract class Piece {
    
    public int getPieceValue() {
 	   return this.getPieceType().getPieceValue();
+   }
+
+   public int getPiecePositionalValue(int coefficient) {
+	   return this.getPieceType().getPieceValue() + BoardUtils.getPieceRowNum(this.pieceAllience, this.piecePostion)*coefficient;
    }
    
    public enum PieceType {

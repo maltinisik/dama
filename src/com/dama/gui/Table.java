@@ -30,6 +30,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import com.chess.engine.player.ai.MiniMax;
+import com.chess.engine.player.ai.MoveStrategy;
 import com.dama.engine.board.Board;
 import com.dama.engine.board.BoardUtils;
 import com.dama.engine.board.Move;
@@ -74,6 +76,7 @@ public class Table extends Observable {
 	  this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
 	  this.board = Board.createStandardBoard();
 	  this.boardPanel=new BoardPanel();
+	  this.addObserver(new TableGameAIWatcher());
 	  this.gameFrame.add(this.boardPanel,BorderLayout.CENTER);
 	  this.gameFrame.setVisible(true);
 	  this.gameFrame.setDefaultCloseOperation(3);
@@ -96,15 +99,30 @@ public class Table extends Observable {
 
 	private JMenu CreateFileMenu() {
 		final JMenu fileMenu = new JMenu("File");
-		final JMenuItem openPGN = new JMenuItem("Load PGN File");
-		openPGN.addActionListener(new ActionListener() {
+
+		final JMenuItem newGame = new JMenuItem("New Game");
+		newGame.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("open up the pgn file");
+				Board board = Board.createStandardBoard();
+				Table table = Table.get();
+				table.updateGameBoard(board);
+				table.show();
 			}
 		});
 		
-		fileMenu.add(openPGN);
+		fileMenu.add(newGame);		
+		
+		
+//		final JMenuItem openPGN = new JMenuItem("Load PGN File");
+//		openPGN.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				System.out.println("open up the pgn file");
+//			}
+//		});
+//		
+//		fileMenu.add(openPGN);
 		
 		//Exit button
 		final JMenuItem exit = new JMenuItem("Exit");
@@ -163,7 +181,58 @@ public class Table extends Observable {
         setChanged();
         notifyObservers(playerType);
     }
-	
+
+    private static class TableGameAIWatcher
+    implements Observer {
+@Override
+public void update(final Observable o,
+                   final Object arg) {
+    if (Table.get().getGameSetup().isAIPlayer(Table.get().getGameBoard().getCurrentPlayer()) &&
+        !Table.get().getGameBoard().getCurrentPlayer().isInLoss() &&
+        !Table.get().getGameBoard().getCurrentPlayer().isInDraw()) {
+        System.out.println(Table.get().getGameBoard().getCurrentPlayer() + " is set to AI, thinking....");
+      
+        final AIThinkTank thinkTank = new AIThinkTank();
+        thinkTank.execute();
+    }
+    if (Table.get().getGameBoard().getCurrentPlayer().isInLoss()) {
+        JOptionPane.showMessageDialog(Table.get().getBoardPanel(),
+                "Game Over: Player " + Table.get().getGameBoard().getCurrentPlayer() + " is in lost!", "Game Over",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+    if (Table.get().getGameBoard().getCurrentPlayer().isInDraw()) {
+        JOptionPane.showMessageDialog(Table.get().getBoardPanel(),
+                "Game Over: Player " + Table.get().getGameBoard().getCurrentPlayer() + " is in draw!", "Game Over",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+}
+
+
+private static class AIThinkTank extends SwingWorker<Move, String> {
+    private AIThinkTank() {
+    }
+            @Override
+            protected Move doInBackground() throws Exception {
+        final MoveStrategy strategy = new MiniMax(Table.get().gameSetup.getSearchDepth());
+        Move bestMove = strategy.execute(Table.get().getGameBoard());
+                    return bestMove;
+            }
+            
+            @Override
+            public void done() {
+                     try {
+                    final Move bestMove = get();
+                    Table.get().updateComputerMove(bestMove);
+                    Table.get().updateGameBoard(Table.get().getGameBoard().getCurrentPlayer().makeMove(bestMove).getTransitionBoard());
+                    Table.get().getBoardPanel().drawBoard(Table.get().getGameBoard());
+                    Table.get().moveMadeUpdate(PlayerType.COMPUTER);
+                } catch (final Exception e) {
+                    e.printStackTrace();
+                }
+            }
+}
+}    
+    
 	public enum BoardDirection {
 		NORMAL {
 			@Override
@@ -256,7 +325,11 @@ public class Table extends Observable {
 				
 				@Override
 				public void mouseEntered(final MouseEvent e) {
-					System.out.println("postion: " + tileId);
+					System.out.println("position: " + tileId);
+					
+		            if (board.getTile(tileId).getPiece()!=null ) {
+		            	System.out.println("PiecePositionalValue: " + board.getTile(tileId).getPiece().getPiecePositionalValue(50));
+					}
 				}
 				
 				@Override

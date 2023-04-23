@@ -1,5 +1,7 @@
 package com.dama.engine.board;
 
+import com.dama.engine.pieces.Alliance;
+
 public class BoardUtils {
 	
 	public static final boolean[] FIRST_COLUMN = initColumn(0);
@@ -60,6 +62,13 @@ public class BoardUtils {
 		} while (columnNumber<NUM_TILES);
 		
 		return column;
+	}
+
+	public static int getPieceRowNum(Alliance pieceAlliance, int piecePosition) {
+		if (pieceAlliance == Alliance.BLACK) 
+			return (int) (Math.floor(piecePosition/BoardUtils.NUM_TILES_PER_ROW)+1);
+
+		return BoardUtils.NUM_TILES_PER_ROW - (int) Math.floor(piecePosition/BoardUtils.NUM_TILES_PER_ROW);
 	}
 
 }
