@@ -38,6 +38,7 @@ import com.dama.engine.board.Move;
 import com.dama.engine.board.Move.AttackMove;
 import com.dama.engine.board.Tile;
 import com.dama.engine.pieces.Piece;
+import com.dama.engine.player.MoveExecution;
 import com.dama.engine.player.MoveTransition;
 import com.google.common.collect.Lists;
 
@@ -151,6 +152,22 @@ public class Table extends Observable {
 		});
 		
 		preferencesMenu.add(flipTheBoard);
+		
+		final JMenuItem takeBack = new JMenuItem("Take Back");
+		takeBack.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Table table = Table.get();
+				MoveExecution lastMoveExecution = table.board.getLastMoveExecution();
+				
+				if (lastMoveExecution!=null) {
+					table.updateGameBoard(lastMoveExecution.getMove().getBoard());
+					table.show();
+				}
+			}
+		});
+		
+		preferencesMenu.add(takeBack);
 		
 		return preferencesMenu;
 	}

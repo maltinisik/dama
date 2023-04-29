@@ -199,7 +199,7 @@ public class Board {
 //		builder.setPiece(new Pawn(46,Alliance.WHITE));
 //		builder.setPiece(new Pawn(47,Alliance.WHITE));
 		
-			builder.setMoveMaker(Alliance.WHITE);
+			builder.setMoveMaker(Alliance.BLACK);
 		
 		return builder.build();
 	}

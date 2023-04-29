@@ -8,6 +8,7 @@ import com.dama.engine.board.Board.Builder;
 import com.dama.engine.pieces.Alliance;
 import com.dama.engine.pieces.Pawn;
 import com.dama.engine.pieces.Piece;
+import com.dama.engine.pieces.Queen;
 import com.dama.engine.player.MoveDirection;
 import com.dama.engine.player.MoveExecution;
 
@@ -69,8 +70,11 @@ public abstract class Move {
 			}
 		    
 		    //promote the piece
+		    Piece lastMovedPiece = this.promotedPawn.getPromotionPiece().movePiece(this);
+		    builder.setPiece(lastMovedPiece);
+		    builder.setMoveExecution(new MoveExecution(this,lastMovedPiece));
 		    
-		    builder.setPiece(this.promotedPawn.getPromotionPiece().movePiece(this));
+		    builder.setPiece(lastMovedPiece);
 		    builder.setMoveMaker(pawnMovedBoard.getCurrentPlayer().getAlliance());
 		    
 			return builder.build();
@@ -106,7 +110,10 @@ public abstract class Move {
 		    }
 		    
 		    //promote the piece
-		    builder.setPiece(this.promotedPawn.getPromotionPiece().movePiece(this));
+		    Piece lastMovedPiece = this.promotedPawn.getPromotionPiece().movePiece(this);
+		    builder.setPiece(lastMovedPiece);
+		    builder.setMoveExecution(new MoveExecution(this,lastMovedPiece));
+		    builder.setPiece(lastMovedPiece);
 		    builder.setMoveMaker(pawnMovedBoard.getCurrentPlayer().getAlliance());
 		    
 			return builder.build();
@@ -142,7 +149,12 @@ public abstract class Move {
 		    }
 		    
 		    //promote the piece
-		    builder.setPiece(this.promotedPawn.getPromotionPiece().movePiece(this));
+		    
+		    Piece lastMovedPiece = this.promotedPawn.getPromotionPiece().movePiece(this);
+		    builder.setPiece(lastMovedPiece);
+		    builder.setMoveExecution(new MoveExecution(this,lastMovedPiece));
+		    
+		    builder.setPiece(lastMovedPiece);
 		    builder.setMoveMaker(pawnMovedBoard.getCurrentPlayer().getAlliance());
 		    
 			return builder.build();
@@ -284,7 +296,6 @@ public abstract class Move {
 	    //move the moved piece
 		Piece lastMovedPiece = movedPiece.movePiece(this);
 	    builder.setPiece(lastMovedPiece);
-	    
 	    builder.setMoveExecution(new MoveExecution(this,lastMovedPiece));
 	    builder.setMoveMaker(piece.getPieceAlliance());
 	    builder.makeTransientBuilder();
@@ -346,7 +357,10 @@ public int getCurrentCoordinate() {
 	}
     
     //move the moved piece
-    builder.setPiece(movedPiece.movePiece(this));
+    Piece lastMovedPiece = movedPiece.movePiece(this);
+    builder.setPiece(lastMovedPiece);
+    builder.setMoveExecution(new MoveExecution(this,lastMovedPiece));
+    builder.setPiece(lastMovedPiece);
     builder.setMoveMaker(board.getCurrentPlayer().getOpponent().getAlliance());
     
 	return builder.build();

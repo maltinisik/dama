@@ -10,7 +10,6 @@ public final class StandartBoardEvaluator
 
     private final static int WIN_BONUS = 100000;
     private final static int MOBILITY_MULTIPLIER = 1;
-    private final static int POSITIONAL_MULTIPLIER = 10;
     private static final StandartBoardEvaluator INSTANCE = new StandartBoardEvaluator();
 
     private StandartBoardEvaluator() {
@@ -32,26 +31,37 @@ public final class StandartBoardEvaluator
                (
                 "White winThreats : " + winThreats(board.getWhitePlayer(), depth) + "\n" +
                 "White total piece value : " + totalPieceValue(board.getWhitePlayer()) + "\n" +
+                "White total piece value : " + totalPiecePositionalValue(board.getWhitePlayer()) + "\n" +
                 "---------------------\n" +
                 "Black winThreats : " + winThreats(board.getBlackPlayer(), depth) + "\n" +
-                "Black total piece value : " + totalPieceValue(board.getBlackPlayer()) + "\n" );
+                "Black total piece value : " + totalPieceValue(board.getBlackPlayer()) + "\n" +
+                "Black total piece value : " + totalPiecePositionalValue(board.getBlackPlayer()) + "\n");
     }
 
     @VisibleForTesting
     private static int score(final Player player,
                              final int depth) {
-        return winThreats(player, depth) + totalPieceValue(player);
+        return winThreats(player, depth) + totalPieceValue(player) + totalPiecePositionalValue(player);
     }
 
     private static int totalPieceValue(Player player) {
+    	int total = 0;
+    	for (Piece piece : player.getActivePieces()) {
+    		total += piece.getPieceValue();
+		}
+        
+		return total;
+	}
+
+    private static int totalPiecePositionalValue(Player player) {
     	int total = 0;
     	for (Piece piece : player.getActivePieces()) {
     		total += piece.getPiecePositionalValue();
 		}
         
 		return total;
-	}
-
+	}    
+    
     private static int winThreats(final Player player,
                                    final int depth) {
         return player.isInWin() ? WIN_BONUS : 0;

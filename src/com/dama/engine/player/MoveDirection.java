@@ -67,7 +67,7 @@ public enum MoveDirection {
     }
 
 	public static boolean checkIsOppositeDirection(Board board, Piece piece, int offSet) {
-        if (board.getLastMoveExecution()!=null) {
+        if (board.getLastMoveExecution()!=null && board.getLastMoveExecution().getMove().isAttack()) {
         	
         	Move.AttackMove attackMove = (Move.AttackMove)board.getLastMoveExecution().getMove();
     
