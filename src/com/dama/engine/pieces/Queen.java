@@ -30,7 +30,7 @@ public class Queen extends Piece {
 			int candidateDestinationCoordinate = this.piecePostion;
 			while(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
 				if (isFirstColumnExclusion(candidateDestinationCoordinate, candidateCoordinateOffset) ||
-						isEightColumnExclusion(candidateDestinationCoordinate, candidateCoordinateOffset)) {
+					isEightColumnExclusion(candidateDestinationCoordinate, candidateCoordinateOffset)) {
 					break;
 				}
 				
@@ -48,7 +48,7 @@ public class Queen extends Piece {
 					  else {
 						  //hedef tas 1. veya 8. kolonda ise bunu pass gec
 						  if (isFirstColumnExclusion(candidateDestinationCoordinate, candidateCoordinateOffset) ||
-									isEightColumnExclusion(candidateDestinationCoordinate, candidateCoordinateOffset)) {
+								isEightColumnExclusion(candidateDestinationCoordinate, candidateCoordinateOffset)) {
 								break;
 						  }
 							
@@ -94,7 +94,7 @@ public class Queen extends Piece {
 								  
 								  AttackMove attackMoveNext = new Move.AttackMove(board, this, behindCandidateDestinationCoordinate, board.getTile(candidateDestinationCoordinate).getPiece(),MoveDirection.getMoveDirection(candidateCoordinateOffset));								  
 						//		  if (!board.isTransientBoard()) {
-									  attackMoveNext = Move.calculateNextAttackMoves(this,attackMoveNext);							
+									  attackMoveNext = Move.calculateNextAttackMoves(this,attackMoveNext);
 						//		  }
 								  legalMoves.add(attackMoveNext);
 								  
@@ -104,7 +104,7 @@ public class Queen extends Piece {
 						  }
 
 						  //rakip ya da kendi tasini buldugunda her durumda next aramalari kes
-						  //zaten kendis tasi ise durdurmak gerekiyor
+						  //zaten kendi tasi ise durdurmak gerekiyor
 						  break;
 					  }
 					}

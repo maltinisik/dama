@@ -2,7 +2,6 @@ package com.dama.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -27,6 +26,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
@@ -35,9 +35,11 @@ import com.chess.engine.player.ai.MoveStrategy;
 import com.dama.engine.board.Board;
 import com.dama.engine.board.BoardUtils;
 import com.dama.engine.board.Move;
-import com.dama.engine.board.Move.AttackMove;
 import com.dama.engine.board.Tile;
+import com.dama.engine.pieces.Alliance;
+import com.dama.engine.pieces.Pawn;
 import com.dama.engine.pieces.Piece;
+import com.dama.engine.pieces.Queen;
 import com.dama.engine.player.MoveExecution;
 import com.dama.engine.player.MoveTransition;
 import com.google.common.collect.Lists;
@@ -48,6 +50,7 @@ public class Table extends Observable {
 	private final BoardPanel boardPanel;
 	private Board board;
 	private final GameSetup gameSetup;
+	private boolean trainingMode = false;
 	
 	private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(600,600);
 	private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400,350);
@@ -115,16 +118,6 @@ public class Table extends Observable {
 		fileMenu.add(newGame);		
 		
 		
-//		final JMenuItem openPGN = new JMenuItem("Load PGN File");
-//		openPGN.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				System.out.println("open up the pgn file");
-//			}
-//		});
-//		
-//		fileMenu.add(openPGN);
-		
 		//Exit button
 		final JMenuItem exit = new JMenuItem("Exit");
 		exit.addActionListener(new ActionListener() {
@@ -169,6 +162,28 @@ public class Table extends Observable {
 		
 		preferencesMenu.add(takeBack);
 		
+		
+		final JMenuItem trainingMode = new JMenuItem("Custom Board");
+		trainingMode.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Table table = Table.get();
+				table.setTrainingMode(!table.isTrainingMode());
+				
+				if (table.isTrainingMode()) {
+					
+					table.updateGameBoard(Board.createEmptyBoard());
+					table.show();
+					trainingMode.setLabel("Close Custom Board");
+				}
+				else {
+					trainingMode.setLabel("Custom Board");					
+				}
+			}
+		});
+		
+		preferencesMenu.add(trainingMode);
+		
 		return preferencesMenu;
 	}
 	
@@ -198,7 +213,7 @@ public class Table extends Observable {
         setChanged();
         notifyObservers(playerType);
     }
-
+    
     private static class TableGameAIWatcher
     implements Observer {
 @Override
@@ -314,6 +329,8 @@ private static class AIThinkTank extends SwingWorker<Move, String> {
 	private class TilePanel extends JPanel {
 
 		private final int tileId;
+  	    private JPopupMenu popup;
+
 		
 		TilePanel(final BoardPanel boardPanel,
 				  final int tileId) {
@@ -322,6 +339,7 @@ private static class AIThinkTank extends SwingWorker<Move, String> {
 			setPreferredSize(TILE_PANEL_DIMENSION);
 			assignTileColor();
 			assignTilePieceIcon(board);
+			assignPopUpMenu();
 		
 			addMouseListener(new MouseListener() {
 				
@@ -401,17 +419,13 @@ private static class AIThinkTank extends SwingWorker<Move, String> {
 					  
 			          //right click
 			          if(SwingUtilities.isRightMouseButton(e)) {
-			            	clearTiles();
+			        	  
+			        	  if (trainingMode) {
+				        	  popup.show(boardPanel , e.getX(), e.getY());  
+						  }
+			        	  			        	  
+			              clearTiles();
 			          }
-				}
-
-				private boolean checkMoveIsValid(Move move) {
-	        	    MoveTransition transition = board.getCurrentPlayer().makeMove(move);
-	        	    if (transition.getMoveStatus().isDone()) {
-						return true;
-					}
-					
-					return false;
 				}
 
 				private void invokeLater(final BoardPanel boardPanel) {
@@ -480,6 +494,116 @@ private static class AIThinkTank extends SwingWorker<Move, String> {
 		   }
 		}
 
+		private void assignPopUpMenu() {
+            popup = new JPopupMenu();
+            // add menu items to popup
+            JMenuItem wp = new JMenuItem("White Pawn");
+            wp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+               Board customBoard = Board.createCustomBoard(board, Tile.createTile(tileId, new Pawn(tileId,Alliance.WHITE)), Alliance.WHITE);
+               
+				Table table = Table.get();
+				table.updateGameBoard(customBoard);
+				table.show();
+               
+			}
+		    });
+            popup.add(wp);
+            
+            
+            JMenuItem wq = new JMenuItem("White Queen");
+            wq.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+               Board customBoard = Board.createCustomBoard(board, Tile.createTile(tileId, new Queen(tileId,Alliance.WHITE)), Alliance.WHITE);
+               
+				Table table = Table.get();
+				table.updateGameBoard(customBoard);
+				table.show();
+               
+			}
+		    });            
+            popup.add(wq);
+            
+            
+            JMenuItem bp = new JMenuItem("Black Pawn");
+            bp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+               Board customBoard = Board.createCustomBoard(board, Tile.createTile(tileId, new Pawn(tileId,Alliance.BLACK)), Alliance.WHITE);
+               
+				Table table = Table.get();
+				table.updateGameBoard(customBoard);
+				table.show();
+               
+			}
+		    });
+            popup.add(bp);
+            
+            JMenuItem bq = new JMenuItem("Black Queen");
+            bq.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+               Board customBoard = Board.createCustomBoard(board, Tile.createTile(tileId, new Queen(tileId,Alliance.BLACK)), Alliance.WHITE);
+               
+				Table table = Table.get();
+				table.updateGameBoard(customBoard);
+				table.show();
+               
+			}
+		    });            
+            popup.add(bq);
+
+            popup.addSeparator();
+            
+            JMenuItem et = new JMenuItem("Empty Tile");
+            et.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+               Board customBoard = Board.createCustomBoard(board, Tile.createTile(tileId, null), Alliance.WHITE);
+               
+				Table table = Table.get();
+				table.updateGameBoard(customBoard);
+				table.show();
+               
+			}
+		    });            
+            popup.add(et);
+            
+            popup.addSeparator();
+            
+            JMenuItem wt = new JMenuItem("White Turn");
+            wt.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Table table = Table.get();
+	            Board customBoard = Board.createCustomBoard(board, Tile.createFakeTile(), Alliance.WHITE);
+	            
+				table.updateGameBoard(customBoard);
+				table.show();
+               
+			}
+		    });
+            popup.add(wt);
+            
+            JMenuItem bt = new JMenuItem("Black Turn");
+            bt.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Table table = Table.get();
+	            Board customBoard = Board.createCustomBoard(board, Tile.createFakeTile(), Alliance.BLACK);
+	            
+				table.updateGameBoard(customBoard);
+				table.show();
+               
+			}
+		    });            
+            popup.add(bt);
+            
+            this.add(popup);
+		}
+		
 		private void assignTileColor() {
 			if (BoardUtils.FIRST_ROW[this.tileId] || 
 					BoardUtils.THIRD_ROW[this.tileId] || 
@@ -506,6 +630,14 @@ private static class AIThinkTank extends SwingWorker<Move, String> {
 
 	public BoardPanel getBoardPanel() {
 		return this.boardPanel;
+	}
+	
+	public boolean isTrainingMode() {
+		return this.trainingMode;
+	}
+	
+	public void setTrainingMode(boolean trainingMode) {
+		this.trainingMode=trainingMode;
 	}
 
     public void show() {

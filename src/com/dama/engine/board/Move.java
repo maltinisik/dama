@@ -298,10 +298,18 @@ public abstract class Move {
 	    builder.setPiece(lastMovedPiece);
 	    builder.setMoveExecution(new MoveExecution(this,lastMovedPiece));
 	    builder.setMoveMaker(piece.getPieceAlliance());
-	    builder.makeTransientBuilder();
+	    builder.makeTransient();
 	    
-		return builder.build();
-	}
+		System.out.println("=================================");	    
+	    System.out.println(this.board);
+
+		Board transitionBoard = builder.build();
+
+		System.out.println(transitionBoard);
+		System.out.println("=================================");
+		
+        return transitionBoard;	 
+	 }
   }
   
   public static class NullMove extends Move {

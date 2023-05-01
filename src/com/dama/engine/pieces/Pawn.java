@@ -102,7 +102,7 @@ public class Pawn extends Piece {
 				{
 					//hedef tas 1. veya 8. kolonda ise bunu pass gec
 					if (isFirstColumnExclusion(behindCandidateDestinationCoordinate, candidateCoordinateOffset) ||
-								isEightColumnExclusion(behindCandidateDestinationCoordinate, candidateCoordinateOffset)) {
+					   isEightColumnExclusion(behindCandidateDestinationCoordinate, candidateCoordinateOffset)) {
 					   continue;
 					}
 					

@@ -21,6 +21,10 @@ public abstract class Tile {
 		 return piece != null ? new OccupiedTile(tileCoordinate, piece) : EMPTY_TILES_CACHES.get(tileCoordinate);
 	  }
 	 
+	  public static Tile createFakeTile() {
+		 return new EmptyTile(-1);
+	  }
+	  
 	  public int getTileCoordinate() {
 		  return tileCoordinate;
 	  }

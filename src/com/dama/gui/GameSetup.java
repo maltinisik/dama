@@ -55,6 +55,7 @@ class GameSetup extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 whitePlayerType = whiteComputerButton.isSelected() ? PlayerType.COMPUTER : PlayerType.HUMAN;
                 blackPlayerType = blackComputerButton.isSelected() ? PlayerType.COMPUTER : PlayerType.HUMAN;
+                
                 GameSetup.this.setVisible(false);
             }
         });
@@ -108,4 +109,5 @@ class GameSetup extends JDialog {
     int getSearchDepth() {
         return (Integer)this.searchDepthSpinner.getValue();
     }
+    
 }
