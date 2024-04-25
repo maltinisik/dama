@@ -300,13 +300,13 @@ public abstract class Move {
 	    builder.setMoveMaker(piece.getPieceAlliance());
 	    builder.makeTransient();
 	    
-		System.out.println("=================================");	    
-	    System.out.println(this.board);
+		//System.out.println("=================================");	    
+	    //System.out.println(this.board);
 
 		Board transitionBoard = builder.build();
 
-		System.out.println(transitionBoard);
-		System.out.println("=================================");
+		//System.out.println(transitionBoard);
+		//System.out.println("=================================");
 		
         return transitionBoard;	 
 	 }

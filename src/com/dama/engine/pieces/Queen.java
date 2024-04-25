@@ -7,6 +7,7 @@ import java.util.List;
 import com.dama.engine.board.Board;
 import com.dama.engine.board.BoardUtils;
 import com.dama.engine.board.Move;
+import com.dama.engine.board.NextAttackMove;
 import com.dama.engine.board.Move.AttackMove;
 import com.dama.engine.board.Move.MajorMove;
 import com.dama.engine.board.Tile;
@@ -70,9 +71,19 @@ public class Queen extends Piece {
 						  if (!board.getTile(behindCandidateDestinationCoordinate).isTileOccupied()) 
 						  {
 							  AttackMove attackMove = new Move.AttackMove(board, this, behindCandidateDestinationCoordinate, board.getTile(candidateDestinationCoordinate).getPiece(),MoveDirection.getMoveDirection(candidateCoordinateOffset));								  
-							//  if (!board.isTransientBoard()) {
-								  attackMove = Move.calculateNextAttackMoves(this,attackMove);							
-							//  }
+							  //if (!board.isTransientBoard()) {
+								  attackMove = Move.calculateNextAttackMoves(this,attackMove);
+							      
+//							  try {
+//								NextAttackMove nextAttackMoveFuture = new NextAttackMove(this,attackMove);
+//								nextAttackMoveFuture.start();
+//								nextAttackMoveFuture.join();
+//								attackMove = nextAttackMoveFuture.attackMove;
+//							  }
+//							  catch(InterruptedException ex) 
+//							  { System.err.println(ex);}	
+							  
+							  //}
 							  legalMoves.add(attackMove);
 
 							  //bir sonraki kareden baska varsa bos kareye koyabilir bunlari da AttackMove olarak eklemek gerekiyor
@@ -93,9 +104,19 @@ public class Queen extends Piece {
 								  }
 								  
 								  AttackMove attackMoveNext = new Move.AttackMove(board, this, behindCandidateDestinationCoordinate, board.getTile(candidateDestinationCoordinate).getPiece(),MoveDirection.getMoveDirection(candidateCoordinateOffset));								  
-						//		  if (!board.isTransientBoard()) {
+								  //if (!board.isTransientBoard()) {
 									  attackMoveNext = Move.calculateNextAttackMoves(this,attackMoveNext);
-						//		  }
+//									  try {
+//										NextAttackMove nextAttackMoveFuture = new NextAttackMove(this,attackMoveNext);
+//										nextAttackMoveFuture.start();
+//										nextAttackMoveFuture.join();
+//										attackMoveNext = nextAttackMoveFuture.attackMove;
+//									  }
+//									  catch(InterruptedException ex) 
+//									  { System.err.println(ex);}									  
+									  
+									  
+								  //}
 								  legalMoves.add(attackMoveNext);
 								  
 								  //+1 olarak ilerlerken 8.kolonda ise cik

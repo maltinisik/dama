@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-18">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -7,6 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/TCMALTINISIK/.m2/repository/com/google/guava/guava/18.0/guava-18.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/TCMALTINISIK/Downloads/junit-4.10.jar"/>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Users/TCMALTINISIK/Downloads/jedis-2.8.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

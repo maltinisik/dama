@@ -44,6 +44,8 @@ import com.dama.engine.player.MoveExecution;
 import com.dama.engine.player.MoveTransition;
 import com.google.common.collect.Lists;
 
+import redis.clients.jedis.Jedis;
+
 public class Table extends Observable {
   
 	private final JFrame gameFrame;
@@ -51,6 +53,7 @@ public class Table extends Observable {
 	private Board board;
 	private final GameSetup gameSetup;
 	private boolean trainingMode = false;
+	public Jedis jedis;
 	
 	private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(600,600);
 	private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400,350);
@@ -67,6 +70,11 @@ public class Table extends Observable {
 	private Move updateComputerMove;
 	
 	private static final Table INSTANCE = new Table();
+	
+    static {
+        //Jedis jedis = new Jedis("localhost"); 
+        System.out.println("Connection to server sucessfully"); 
+    }
 	
 	public static Table get() {
 		return INSTANCE;

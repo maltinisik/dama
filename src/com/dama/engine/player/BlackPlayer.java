@@ -1,17 +1,11 @@
 package com.dama.engine.player;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import com.dama.engine.board.Board;
-import com.dama.engine.board.BoardUtils;
 import com.dama.engine.board.Move;
-import com.dama.engine.board.Tile;
 import com.dama.engine.pieces.Alliance;
-import com.dama.engine.pieces.Pawn;
 import com.dama.engine.pieces.Piece;
-import com.google.common.collect.ImmutableList;
 
 public class BlackPlayer extends Player {
 
