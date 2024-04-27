@@ -343,10 +343,6 @@ public int getCurrentCoordinate() {
 	  return false;
   }
   
-  public boolean isCatlingMove() {
-	  return false;
-  }
-  
   public Piece getAttackedPiece() {
 	  return null;
   }

@@ -55,9 +55,9 @@ public final class StandartBoardEvaluator
 
     private static int totalPiecePositionalValue(Player player) {
     	int total = 0;
-    	for (Piece piece : player.getActivePieces()) {
-    		total += piece.getPiecePositionalValue();
-		}
+//    	for (Piece piece : player.getActivePieces()) {
+//    		total += piece.getPiecePositionalValue();
+//		}
         
 		return total;
 	}    
